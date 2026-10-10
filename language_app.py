@@ -1,9 +1,8 @@
-
 import random
+import tkinter as tk
+from tkinter import messagebox
 
-# Language Learning App
-# Created by Faith
-
+# Language Learning App Dataset
 vocabulary = {
     "Spanish": [
         {"word": "Hello", "translation": "Hola"},
@@ -29,39 +28,133 @@ vocabulary = {
 }
 
 
-def show_vocabulary(language):
-    """Display words and their translations."""
-    print(f"\n--- {language} Vocabulary ---")
+class LanguageApp:
+    def __init__(self, root):
+        """Initialize the application window and launch the first screen."""
+        self.root = root
+        self.root.title("Language Learning App")
+        self.root.geometry("450x500")
+        
+        # Application state tracking variables
+        self.selected_language = "Spanish"
+        self.quiz_questions = []
+        self.current_question_index = 0
+        self.quiz_score = 0
+        self.correct_answer = ""
+        self.option_buttons = []
 
-    for item in vocabulary[language]:
-        print(f"{item['word']} = {item['translation']}")
+        # Start the application on the Main Menu Screen
+        self.show_main_menu_screen()
 
+    def clear_screen(self):
+        """Destroy all active widgets to prepare for drawing a new screen view."""
+        for widget in self.root.winfo_children():
+            widget.destroy()
 
-def take_quiz(language):
-    """Ask translation questions and calculate the score."""
-    questions = vocabulary[language][:]
-    random.shuffle(questions)
+    def show_main_menu_screen(self):
+        """Draw Screen 1: The main menu interface with language selection options."""
+        self.clear_screen()
 
-    score = 0
+        # Header Label
+        title_label = tk.Label(self.root, text="LANGUAGE LEARNING APP", font=("Arial", 16, "bold"), fg="#2C3E50")
+        title_label.pack(pady=20)
 
-    print(f"\n--- {language} Quiz ---")
-    print("Choose the correct translation.")
+        # Language Selection UI dropdown frame
+        lang_frame = tk.LabelFrame(self.root, text=" 1. Select Target Language ", font=("Arial", 10, "bold"), padx=15, pady=15)
+        lang_frame.pack(pady=10, fill="x", padx=40)
 
-    for item in questions:
-        correct_answer = item["translation"]
+        self.lang_var = tk.StringVar(value=self.selected_language)
+        for lang in vocabulary.keys():
+            radio = tk.Radiobutton(lang_frame, text=lang, variable=self.lang_var, value=lang, font=("Arial", 11))
+            radio.pack(anchor="w", pady=2)
 
+        # Action Buttons frame
+        action_frame = tk.LabelFrame(self.root, text=" 2. Choose Mode ", font=("Arial", 10, "bold"), padx=15, pady=15)
+        action_frame.pack(pady=20, fill="x", padx=40)
+
+        learn_btn = tk.Button(action_frame, text="Learn Vocabulary Screen", font=("Arial", 11), bg="#3498DB", fg="white", command=self.navigate_to_vocabulary)
+        learn_btn.pack(fill="x", pady=5)
+
+        quiz_btn = tk.Button(action_frame, text="Take a Quiz Screen", font=("Arial", 11), bg="#2ECC71", fg="white", command=self.navigate_to_quiz_setup)
+        quiz_btn.pack(fill="x", pady=5)
+
+        exit_btn = tk.Button(self.root, text="Exit Application", font=("Arial", 10), bg="#E74C3C", fg="white", command=self.root.quit)
+        exit_btn.pack(pady=10)
+
+    def navigate_to_vocabulary(self):
+        """Save the chosen language state and transition to the vocabulary screen."""
+        self.selected_language = self.lang_var.get()
+        self.show_vocabulary_screen()
+
+    def show_vocabulary_screen(self):
+        """Draw Screen 2: Vocabulary Display layout detailing word translations."""
+        self.clear_screen()
+
+        # Title block
+        title_text = f"Learn {self.selected_language}"
+        header = tk.Label(self.root, text=title_text, font=("Arial", 16, "bold"), fg="#2C3E50")
+        header.pack(pady=15)
+
+        # Dynamic Grid container for tracking dictionary item output
+        grid_frame = tk.Frame(self.root, padx=10, pady=10)
+        grid_frame.pack(fill="both", expand=True, padx=40)
+
+        # Header row columns for table
+        tk.Label(grid_frame, text="English Word", font=("Arial", 11, "bold"), borderwidth=1, relief="solid", width=15, bg="#ECF0F1").grid(row=0, column=0, sticky="nsew")
+        tk.Label(grid_frame, text="Translation", font=("Arial", 11, "bold"), borderwidth=1, relief="solid", width=15, bg="#ECF0F1").grid(row=0, column=1, sticky="nsew")
+
+        # Iterating data into table grid structures
+        for index, item in enumerate(vocabulary[self.selected_language], start=1):
+            tk.Label(grid_frame, text=item["word"], font=("Arial", 11), borderwidth=1, relief="solid", padx=5, pady=5).grid(row=index, column=0, sticky="nsew")
+            tk.Label(grid_frame, text=item["translation"], font=("Arial", 11, "italic", "bold"), fg="#2980B9", borderwidth=1, relief="solid", padx=5, pady=5).grid(row=index, column=1, sticky="nsew")
+
+        # Back Button navigation linking back to main menu
+        back_btn = tk.Button(self.root, text="← Back to Main Menu", font=("Arial", 11), bg="#7F8C8D", fg="white", command=self.show_main_menu_screen)
+        back_btn.pack(pady=25)
+
+    def navigate_to_quiz_setup(self):
+        """Set up quiz parameters, shuffle questions, and transition to the quiz screen."""
+        self.selected_language = self.lang_var.get()
+        self.quiz_questions = vocabulary[self.selected_language][:]
+        random.shuffle(self.quiz_questions)
+        
+        self.current_question_index = 0
+        self.quiz_score = 0
+        self.show_quiz_screen()
+
+    def show_quiz_screen(self):
+        """Draw Screen 3: Interactive Quiz window with dynamic multiple-choice buttons."""
+        self.clear_screen()
+
+        # Guard evaluation block checking if all questions are finished
+        if self.current_question_index >= len(self.quiz_questions):
+            self.show_quiz_results()
+            return
+
+        current_item = self.quiz_questions[self.current_question_index]
+        self.correct_answer = current_item["translation"]
+
+        # Status tracking tracking numbers
+        progress_text = f"Question {self.current_question_index + 1} of {len(self.quiz_questions)}"
+        progress_lbl = tk.Label(self.root, text=progress_text, font=("Arial", 10, "italic"), fg="#7F8C8D")
+        progress_lbl.pack(pady=5)
+
+        # Question text prompt mapping
+        prompt_text = f"What is '{current_item['word']}' in {self.selected_language}?"
+        prompt_lbl = tk.Label(self.root, text=prompt_text, font=("Arial", 13, "bold"), fg="#2C3E50", wraplength=350)
+        prompt_lbl.pack(pady=15)
+
+        # Generate multiple-choice options lists
         wrong_answers = [
-            entry["translation"]
-            for entry in vocabulary[language]
-            if entry["translation"] != correct_answer
+            entry["translation"] for entry in vocabulary[self.selected_language]
+            if entry["translation"] != self.correct_answer
         ]
 
-        options = [correct_answer]
+        options = [self.correct_answer]
         if wrong_answers:
             options.append(random.choice(wrong_answers))
 
-        # Add more unique options where possible.
-        for entry in vocabulary[language]:
+        for entry in vocabulary[self.selected_language]:
             answer = entry["translation"]
             if answer not in options:
                 options.append(answer)
@@ -70,69 +163,58 @@ def take_quiz(language):
 
         random.shuffle(options)
 
-        print(f"\nWhat is '{item['word']}' in {language}?")
-        for number, option in enumerate(options, start=1):
-            print(f"{number}. {option}")
+        # Draw response choice buttons onto UI
+        self.option_buttons = []
+        for opt in options:
+            btn = tk.Button(self.root, text=opt, font=("Arial", 11), bg="#F1C40F", activebackground="#F39C12", pady=8, command=lambda o=opt: self.evaluate_quiz_choice(o))
+            btn.pack(fill="x", padx=60, pady=6)
+            self.option_buttons.append(btn)
 
-        choice = input("Enter your answer (1-3): ").strip()
+        # Cancel link button back out to menu
+        cancel_btn = tk.Button(self.root, text="Cancel Quiz", font=("Arial", 10), bg="#95A5A6", fg="white", command=self.show_main_menu_screen)
+        cancel_btn.pack(pady=30)
 
-        if choice in ("1", "2", "3"):
-            if options[int(choice) - 1] == correct_answer:
-                print("Correct! Well done.")
-                score += 1
-            else:
-                print(f"Not quite. The correct answer is {correct_answer}.")
+    def evaluate_quiz_choice(self, user_selection):
+        """Check if selection matches the solution, display feedback popups, and advance index."""
+        if user_selection == self.correct_answer:
+            self.quiz_score += 1
+            messagebox.showinfo("Result", "Correct! Well done.")
         else:
-            print(f"Invalid choice. The correct answer is {correct_answer}.")
+            messagebox.showerror("Result", f"Not quite. The correct answer is '{self.correct_answer}'.")
 
-    print(f"\nYour score: {score}/{len(questions)}")
-    percentage = score / len(questions) * 100
-    print(f"Result: {percentage:.0f}%")
+        # Step to next index element and redraw the quiz pane screen
+        self.current_question_index += 1
+        self.show_quiz_screen()
+
+    def show_quiz_results(self):
+        """Display final quiz performance metrics and options to return home."""
+        self.clear_screen()
+
+        header = tk.Label(self.root, text="Quiz Completed!", font=("Arial", 18, "bold"), fg="#27AE60")
+        header.pack(pady=30)
+
+        total_questions = len(self.quiz_questions)
+        percentage = (self.quiz_score / total_questions) * 100
+
+        score_text = f"Your Score: {self.quiz_score} / {total_questions}"
+        score_lbl = tk.Label(self.root, text=score_text, font=("Arial", 14, "bold"))
+        score_lbl.pack(pady=10)
+
+        pct_text = f"Result Percentage: {percentage:.0f}%"
+        pct_lbl = tk.Label(self.root, text=pct_text, font=("Arial", 14), fg="#2980B9")
+        pct_lbl.pack(pady=10)
+
+        return_btn = tk.Button(self.root, text="Return to Main Menu", font=("Arial", 12, "bold"), bg="#34495E", fg="white", pady=5, command=self.show_main_menu_screen)
+        return_btn.pack(pady=40)
 
 
 def main():
-    """Display the main menu and run the app."""
-    while True:
-        print("\n===== LANGUAGE LEARNING APP =====")
-        print("1. Learn vocabulary")
-        print("2. Take a quiz")
-        print("3. Exit")
-
-        choice = input("Choose an option (1-3): ").strip()
-
-        if choice == "3":
-            print("Thank you for learning. Goodbye!")
-            break
-
-        if choice not in ("1", "2"):
-            print("Invalid choice. Please enter 1, 2, or 3.")
-            continue
-
-        languages = list(vocabulary.keys())
-
-        print("\nChoose a language:")
-        for number, language in enumerate(languages, start=1):
-            print(f"{number}. {language}")
-
-        language_choice = input("Enter a language number: ").strip()
-
-        if not language_choice.isdigit():
-            print("Please enter a valid number.")
-            continue
-
-        index = int(language_choice) - 1
-
-        if index < 0 or index >= len(languages):
-            print("Invalid language selection.")
-            continue
-
-        language = languages[index]
-
-        if choice == "1":
-            show_vocabulary(language)
-        else:
-            take_quiz(language)
+    """Instantiate the root app configuration window and launch loops."""
+    root = tk.Tk()
+    app = LanguageApp(root)
+    root.mainloop()
 
 
 if __name__ == "__main__":
     main()
+
