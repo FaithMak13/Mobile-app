@@ -1,59 +1,73 @@
 # Language Learning App
 
-## Overview
+# Overview
 
-The Language Learning App is a beginner-friendly application designed to help users learn everyday vocabulary in different languages. Users can choose Spanish, French, or Shona, view words and their translations, and test their knowledge through a multiple-choice quiz. The goal is to make language learning simple, enjoyable, and accessible to beginners.
+The Language Learning App is an introductory Python program that can be used to learn everyday vocabularies in Spanish, French, and Shona. It allows the user to view the vocabularies and their translation, answer multiple choice quizzes, get feedback on the answers provided, and see the final scores and percentage achieved during the quiz.
 
-**Video Demo:** Video link submitted privately via the Module Submit Form.
+The main objective of being a budding software engineer is to enhance my programming, problem-solving, and application development skills through the creation of programs that make language learning easy and fun. This program will allow me to exercise my Python functions, conditions, loop, list comprehension, and user interaction skills.
 
-## Development Environment
+How to Use the App
 
-* **Platform/OS:** Developed and tested on a desktop computer; mobile deployment is planned for a future sprint.
-* **Language/Framework:** Python 3. 
-* **IDE/Tools used:** Visual Studio Code, Git, and GitHub.
-* **Python modules:** `random` (built-in Python module).
+Ensure that you have Python 3 installed on your machine.
 
-## Features
+Download or clone the repository containing the program.
 
-* Display vocabulary and translations.
-* Choose between Spanish, French, and Shona.
-* Take a multiple-choice vocabulary quiz.
-* Receive feedback for correct and incorrect answers.
-* View your final quiz score and percentage.
-* Navigate through a menu to learn, take a quiz, or exit the program.
+Open the repository folder in Visual Studio Code.
 
-## How to Run the Program
+Open a terminal in the repository folder.
 
-1. Install Python 3 on your computer.
-2. Download or clone this repository from GitHub.
-3. Open the project folder in Visual Studio Code.
-4. Open a terminal in the project folder.
-5. Run the following command:
+Run the program using the following command:
 
-   `python language_app.py`
+python language_app.py
 
-6. Follow the menu instructions to learn vocabulary or take a quiz.
+Select a language, study vocabulary, take a test, or exit the program by following the options on the menu.
 
-## Useful Websites
+Take the test and check your score and percentage at the end.
 
-* [Python Documentation](https://docs.python.org/3/) — Official Python documentation for learning programming concepts and using built-in modules.
-* [Visual Studio Code](https://code.visualstudio.com/docs) — Documentation for editing, running, and debugging Python code.
-* [GitHub Docs](https://docs.github.com/en) — Guides for creating repositories, committing changes, and uploading project files.
-* [Kivy Documentation](https://kivy.org/doc/stable/) — A resource for developing graphical applications in Python, including applications that can be adapted for mobile devices.
+The present version works via the terminal menu. Building a GUI and running the program on a mobile device are future plans.
 
-## Future Work
+Currently the software works in a menu of the terminal. The future development plans include creating a graphical user interface and installation of the application to the mobile phone. The presentation of 4-5 minutes will cover working of the application and the overview of the Python code.
 
-* **Improve the mobile interface:** Build a graphical interface with buttons, vocabulary cards, and navigation suitable for mobile screens.
-* **Add more languages and vocabulary:** Include languages such as isiZulu, isiXhosa, isiNdebele, and Portuguese.
-* **Save quiz scores:** Store each user's results so they can track their progress over time.
-* **Add learning levels:** Introduce beginner, intermediate, and advanced vocabulary.
-* **Improve the quiz:** Add more answer choices, review incorrect answers, and prevent repeated options.
-* **Test mobile deployment:** Explore packaging the application for Android and testing it on a mobile device.
+[Software Demo Video](https://www.youtube.com/watch?v=myv3ORl_QkY)
 
-## Author
+# Development Environment
 
-Faith
+Tools and technologies utilized in developing the Language Learning App:
 
-## Project Status
+Operating System: Desktop computer environment.
 
-The initial Python prototype supports vocabulary learning and quizzes through a terminal menu. A graphical mobile interface and persistent progress tracking are planned for future development.
+Language: Python 3.
+
+Editor: Visual Studio Code.
+
+Version control system: Git.
+
+Repository: GitHub.
+
+Python library: random – one of the libraries that come with Python by default, utilized for picking questions/answers in quizzes.
+
+The program uses built-in Python functions, so no additional Python packages are needed for the current terminal version of the app.
+
+# Useful Websites
+
+[Python Documentation](https://docs.python.org/3/) — Official Python documentation for learning programming concepts and using built-in module[Visual Studio Code](https://code.visualstudio.com/docs) — Documentation for editing, running, and debugging Python code.
+[GitHub Docs](https://docs.github.com/en) — Guides for creating repositories, committing changes, and uploading project files.
+[Kivy Documentation](https://kivy.org/doc/stable/) — A resource for developing graphical applications in Python, including applications that can be adapted for mobile devices.
+
+# Future Work
+
+* Item 1: Enhance the mobile interface: Design an interface with icons, vocabulary flashcards, and mobile-friendly navigation.
+
+* Item 2: Include additional languages: Add isiZulu, isiXhosa, isiNdebele, and Portuguese.
+
+* Item 3: Store quiz results: Keep a record of learner performance.
+
+* Item 4: Implement different learning levels: Introduce basic, intermediate, and advanced vocabulary.
+
+* Item 5:Improve quiz capabilities: Increase the number of questions, analyze incorrect responses, and enhance response options.
+
+* Item 6: Include additional vocabulary: Increase vocabulary with conversational expressions, greetings, and common phrases.
+
+* Item 7: Explore mobile platform implementation: Package the application for Android and test it on the mobile device.
+
+
